@@ -1,13 +1,19 @@
-NAME = pipex
+NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+INCLUDE_DIR	= include
+INCLUDES =	-I$(INCLUDE_DIR)
+
+LIB = libft/ft_atoi.c
 
 SRCS = 	srcs/philo.c \
+		srcs/input.c \
+		$(LIB)
 
 M_OBJS = $(SRCS:.c=.o)
 
 %o: %c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@printf "\033[0;33mGenerating philosophers objects... %-10.10s\r" $@
 
 all: $(NAME)
