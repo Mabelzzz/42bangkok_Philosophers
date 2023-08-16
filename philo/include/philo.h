@@ -48,7 +48,7 @@ typedef struct s_data
 	// int				n_thread;
 	// int				philo_dead;
 	// long long		t0;
-	t_input			input;
+	t_input			*input;
 	t_philo			*philo;
 
 	// pthread_t		checker;
@@ -56,3 +56,4 @@ typedef struct s_data
 	// pthread_mutex_t	table;
 	// pthread_mutex_t	write;
 }					t_data;
+
