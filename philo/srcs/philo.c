@@ -28,14 +28,22 @@ long long	get_time(void)
 
 void	*routine(void *args)
 {
-	t_data	*data;
+	// t_data	*data;
+	t_philo		*philo;
 
-	data = (t_data *)args;
-	pthread_mutex_lock(&data->philo[data->tid].forks);
-	printf("Test philo id = %d get_time --> %llu\n", data->philo[data->tid].id, get_time());
-	printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
-	printf("-------------------------------------------------------------------------------------------\n");
-	pthread_mutex_unlock(&data->philo[data->tid].forks);
+	// data = (t_data *)args;
+	philo = (t_philo *)args;
+
+	// pthread_mutex_lock(&data->philo[data->tid].forks);
+	printf("Test philo id = %d get_time --> %llu\n", philo->id, get_time());
+	pthread_mutex_lock(&philo->fork);
+	// printf(philo, philo->id, BLU"has taken a fork ( ˘▽˘)っ Y");
+	pthread_mutex_lock(&philo->fork);
+
+	}
+	// printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
+	// printf("-------------------------------------------------------------------------------------------\n");
+	// pthread_mutex_unlock(&data->philo[data->tid].forks);
 	return (NULL);
 }
 
@@ -48,23 +56,32 @@ void	create_pthread(t_data *data, int argc, char **argv)
 	(void) argc;
 
 	data->philo = malloc(sizeof(t_philo) * data->input->num_philo);
+	// while (++i < data->input->num_philo)
+	// {
+	// 	// pthread_mutex_init(&data->philo[i].forks, NULL);
+	// 	// data->tid = i;
+	// 	// data->philo[data->tid].id = i + 1;
+	// 	printf("Thread %d before started\n", data->philo[data->tid].id);
+	// }
+	i = -1;
 	while (++i < data->input->num_philo)
 	{
-		data->tid = i;
-		printf("Thread %d before started\n", i);
-		if (pthread_create(&data->philo[i].thread, NULL, &routine, data) != 0)
+		// data->tid = i;
+		data->philo[i].id = i + 1;
+		printf("Thread %d %d before started\n", i, data->philo[i].id);
+		if (pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]) != 0)
 		{
 			perror("Fail to create thread");
 			return ;
 		}
-		printf("Thread %d has started\n", i);
+		// printf("Thread %d has started\n", i);
 	}
 	i = -1;
 	while (++i < data->input->num_philo)
 	{
 		if (pthread_join(data->philo[i].thread, NULL) != 0)
 			return ;
-		printf("Thread %d has finished execution\n", i);
+		// printf("Thread %d has finished execution\n", i);
 
 	}
 }
