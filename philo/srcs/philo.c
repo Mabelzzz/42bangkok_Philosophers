@@ -6,11 +6,13 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
+	// data = NULL;
+	// data = malloc(sizeof(t_data));
 	if(check_input(argc, argv))
 		return (1);
 	// printf("check argv = %d\n", check_input(argc, argv));
 	data.input = malloc(sizeof(t_input));
-	get_input(data.input, argv);
+	get_input(argc, argv, data.input);
 	create_pthread(&data, argc, argv);
 
 	return (0);
@@ -29,10 +31,11 @@ void	*routine(void *args)
 	t_data	*data;
 
 	data = (t_data *)args;
-	pthread_mutex_lock(&data->philo[data->philo->id].forks);
-	// printf("Test  time --> \n");
-	printf("Test philo id = %d get_time --> %llu\n", data->philo->id, get_time() - data->input->start_time);
-	pthread_mutex_unlock(&data->philo[data->philo->id].forks);
+	pthread_mutex_lock(&data->philo[data->tid].forks);
+	printf("Test philo id = %d get_time --> %llu\n", data->philo[data->tid].id, get_time());
+	printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
+	printf("-------------------------------------------------------------------------------------------\n");
+	pthread_mutex_unlock(&data->philo[data->tid].forks);
 	return (NULL);
 }
 
@@ -47,7 +50,7 @@ void	create_pthread(t_data *data, int argc, char **argv)
 	data->philo = malloc(sizeof(t_philo) * data->input->num_philo);
 	while (++i < data->input->num_philo)
 	{
-		data->philo->id = i;
+		data->tid = i;
 		printf("Thread %d before started\n", i);
 		if (pthread_create(&data->philo[i].thread, NULL, &routine, data) != 0)
 		{

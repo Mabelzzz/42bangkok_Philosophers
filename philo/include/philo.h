@@ -46,10 +46,9 @@ typedef struct s_input
 	int				num_of_eat;
 	long long		start_time;
 }					t_input;
-
 typedef struct s_data
 {
-	// int				n_thread;
+	int				tid;
 	// int				philo_dead;
 	// long long		t0;
 	t_input			*input;
@@ -66,6 +65,6 @@ void		*routine(void *args);
 int			check_input(int argc, char **argv);
 int			ft_atoi(const char *str);
 void		create_pthread(t_data *data, int argc, char **argv);
-void		get_input(t_input *input, char **argv);
+void	get_input(int argc, char **argv, t_input *input);
 
 #endif
