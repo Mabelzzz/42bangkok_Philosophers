@@ -34,7 +34,8 @@ typedef struct s_philo
 	int				fork_left;
 	int				fork_right;
 	pthread_t		thread;
-	pthread_mutex_t	forks;
+	pthread_mutex_t	my_forks;
+	pthread_mutex_t	*another_forks;
 }					t_philo;
 
 typedef struct s_input
@@ -60,8 +61,10 @@ typedef struct s_data
 	// pthread_mutex_t	write;
 }					t_data;
 
+void	set_fork(t_data *data);
 long long	get_time(void);
 void		*routine(void *args);
+
 int			check_input(int argc, char **argv);
 int			ft_atoi(const char *str);
 void		create_pthread(t_data *data, int argc, char **argv);

@@ -13,9 +13,26 @@ int	main(int argc, char **argv)
 	// printf("check argv = %d\n", check_input(argc, argv));
 	data.input = malloc(sizeof(t_input));
 	get_input(argc, argv, data.input);
+	set_fork(&data);
 	create_pthread(&data, argc, argv);
 
 	return (0);
+}
+
+void	set_fork(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while(++i < data->input->num_philo)
+	{
+		// data->philo[i].fork_left = i;
+		if (i != data->input->num_philo - 1)
+			data->philo[i].another_forks = &data->philo[i + 1].my_forks;
+		else
+			data->philo[i].another_forks = &data->philo[0].my_forks;
+			// data->philo[i].fork_right = 0;
+	}
 }
 
 long long	get_time(void)
@@ -36,11 +53,12 @@ void	*routine(void *args)
 
 	// pthread_mutex_lock(&data->philo[data->tid].forks);
 	printf("Test philo id = %d get_time --> %llu\n", philo->id, get_time());
-	pthread_mutex_lock(&philo->fork);
-	// printf(philo, philo->id, BLU"has taken a fork ( ˘▽˘)っ Y");
-	pthread_mutex_lock(&philo->fork);
+	if(pthread_mutex_lock(&philo->my_forks) == 0)
+		printf("Philo %d has taken a my_fork ( ˘▽˘)っ Y\n", philo->id);
+	if(pthread_mutex_lock(philo->another_forks) == 0)
+		printf("Philo %d has taken a another_fork ( ˘▽˘)っ Y\n", philo->id);
+	// pthread_mutex_lock(&philo->fork);
 
-	}
 	// printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
 	// printf("-------------------------------------------------------------------------------------------\n");
 	// pthread_mutex_unlock(&data->philo[data->tid].forks);
