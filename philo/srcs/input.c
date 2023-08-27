@@ -2,6 +2,9 @@
 
 #include "philo.h"
 
+int		check_input(int argc, char **argv);
+void	get_input(int argc, char **argv, t_input *input);
+
 int	check_input(int argc, char **argv)
 {
 	if (argc < 5)
