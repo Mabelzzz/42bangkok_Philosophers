@@ -67,8 +67,10 @@ void	*routine(void *args)
 		// pthread_mutex_lock(&data->philo[data->tid].forks);
 		// printf("Test philo id = %d get_time --> %llu\n", philo->id, get_time());
 		if(pthread_mutex_lock(&philo->my_forks) == 0)
+			// printf("Philo %d has taken a my_fork ( ˘▽˘)っ Y\n", philo->id);
 			ft_print(philo, "has taken a my_fork ( ˘▽˘)っ Y");
 		if(pthread_mutex_lock(&philo->another_forks) == 0)
+			// printf("Philo %d has taken a another_fork ( ˘▽˘)っ Y\n", philo->id);
 			ft_print(philo, "has taken a another_fork ( ˘▽˘)っ Y");
 		// pthread_mutex_lock(&philo->fork);
 		// eating()
@@ -82,6 +84,7 @@ void	*routine(void *args)
 	return (NULL);
 }
 
+void	e
 void	ft_print(t_philo *philo, char *str)
 {
 	if(pthread_mutex_lock(&philo->print) == 0)
