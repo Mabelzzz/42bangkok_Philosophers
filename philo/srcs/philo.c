@@ -74,12 +74,12 @@ void	create_pthread(t_data *data, int argc, char **argv)
 	(void) argc;
 
 	data->philo = malloc(sizeof(t_philo) * data->input->num_philo);
-	// while (++i < data->input->num_philo)
+	while (++i < data->input->num_philo)
 	// {
-	// 	// pthread_mutex_init(&data->philo[i].forks, NULL);
-	// 	// data->tid = i;
-	// 	// data->philo[data->tid].id = i + 1;
-	// 	printf("Thread %d before started\n", data->philo[data->tid].id);
+		// pthread_mutex_init(&data->philo[i].forks, NULL);
+		// data->tid = i;
+		// data->philo[data->tid].id = i + 1;
+		printf("Thread %d before started\n", data->philo[i].id);
 	// }
 	i = -1;
 	while (++i < data->input->num_philo)

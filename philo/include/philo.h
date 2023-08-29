@@ -49,7 +49,7 @@ typedef struct s_input
 }					t_input;
 typedef struct s_data
 {
-	int				tid;
+	int					stid;
 	// int				philo_dead;
 	// long long		t0;
 	t_input			*input;
