@@ -26,19 +26,6 @@
 // 	int				right;
 // }					t_fork;
 
-typedef struct s_philo
-{
-	int				id;
-	int				num_of_ate;
-	int				time_to_die;
-	int				fork_left;
-	int				fork_right;
-	pthread_t		thread;
-	pthread_mutex_t	print;
-	pthread_mutex_t	my_forks;
-	pthread_mutex_t	another_forks;
-}					t_philo;
-
 typedef struct s_input
 {
 	int				num_philo;
@@ -48,6 +35,23 @@ typedef struct s_input
 	int				num_of_eat;
 	long long		start_time;
 }					t_input;
+
+typedef struct s_philo
+{
+	int				id;
+	int				num_of_ate;
+	int				time_to_die;
+	// int				fork_left;
+	// int				fork_right;
+	long long		current;
+	int				eat_cnt;
+	t_input			*input;
+	pthread_t		thread;
+	pthread_mutex_t	print;
+	pthread_mutex_t	my_forks;
+	pthread_mutex_t	another_forks;
+}					t_philo;
+
 typedef struct s_data
 {
 	int				tid;
@@ -63,14 +67,17 @@ typedef struct s_data
 	// pthread_mutex_t	write;
 }					t_data;
 
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
+void	eating(t_philo *philo);
 
 void		set_fork(t_data *data);
 void		*routine(void *args);
 long long	get_time(void);
 void		create_pthread(t_data *data, int argc, char **argv);
+void		my_sleep(long long start, long long time);
+// void		ft_print(t_philo *philo, char *str);
 
-void	ft_print(t_philo *philo, char *str);
+void	ft_print(t_philo *philo, char *str, char *color);
 int		check_input(int argc, char **argv);
 void	get_input(int argc, char **argv, t_input *input);
 

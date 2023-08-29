@@ -1,11 +1,13 @@
 
 #include "philo.h"
-# include <stdio.h>
 
 void		set_fork(t_data *data);
 void		*routine(void *args);
 long long	get_time(void);
 void		create_pthread(t_data *data, int argc, char **argv);
+void		my_sleep(long long start, long long time);
+// void		ft_print(t_philo *philo, char *str);
+void	ft_print(t_philo *philo, char *str, char *color);
 
 int	main(int argc, char **argv)
 {
@@ -68,27 +70,51 @@ void	*routine(void *args)
 		// printf("Test philo id = %d get_time --> %llu\n", philo->id, get_time());
 		if(pthread_mutex_lock(&philo->my_forks) == 0)
 			// printf("Philo %d has taken a my_fork ( ˘▽˘)っ Y\n", philo->id);
-			ft_print(philo, "has taken a my_fork ( ˘▽˘)っ Y");
+			ft_print(philo, "has taken a my_fork", MAGENTA);
 		if(pthread_mutex_lock(&philo->another_forks) == 0)
 			// printf("Philo %d has taken a another_fork ( ˘▽˘)っ Y\n", philo->id);
-			ft_print(philo, "has taken a another_fork ( ˘▽˘)っ Y");
+			ft_print(philo, "has taken a another_fork", MAGENTA);
 		// pthread_mutex_lock(&philo->fork);
-		// eating()
+		// eating(philo);
+		philo->current = get_time() - philo->input->start_time;
+		ft_print(philo, "is eating", GREEN);
+		my_sleep(philo->current, (long long)philo->input->time_to_eat);
+		philo->eat_cnt++;
 		// printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
 		// printf("-------------------------------------------------------------------------------------------\n");
 		pthread_mutex_unlock(&philo->my_forks);
 		pthread_mutex_unlock(&philo->another_forks);
-
+		philo->current = get_time() - philo->input->start_time;
+		ft_print(philo, "is sleeping", BLUE);
+		my_sleep(philo->current, (long long)philo->input->time_to_sleep);
+		philo->current = get_time() - philo->input->start_time;
+		ft_print(philo, "is thinking", YELLOW);
+		// sleeping(philo);
 
 	}
 	return (NULL);
 }
 
-void	e
-void	ft_print(t_philo *philo, char *str)
+void	my_sleep(long long start, long long time)
+{
+	while(get_time() - start < time * 1000)
+		usleep(1);
+}
+
+// void	eating(t_philo *philo)
+// {
+// 	long long current;
+// 	long long start;
+
+// 	start = get_time();
+// 	current = get_time();
+// 	my_sleep(get_time(), philo->input->time_to_eat);
+// }
+
+void	ft_print(t_philo *philo, char *str, char *color)
 {
 	if(pthread_mutex_lock(&philo->print) == 0)
-		printf("Philo %d %s\n", philo->id, str);
+		printf("%sPhilo[%lld] %d %s\n"RESET, color, philo->current/1000, philo->id, str);
 	pthread_mutex_unlock(&philo->print);
 }
 
@@ -107,6 +133,7 @@ void	create_pthread(t_data *data, int argc, char **argv)
 		pthread_mutex_init(&data->philo[i].my_forks, NULL);
 		// printf("Thread %d before started\n", data->philo[data->tid].id);
 		data->philo[i].print = data->print;
+		data->philo[i].input = data->input;
 	}
 	set_fork(data);
 	i = -1;
