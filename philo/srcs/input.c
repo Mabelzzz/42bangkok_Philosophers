@@ -1,6 +1,8 @@
 
-
 #include "philo.h"
+
+int		check_input(int argc, char **argv);
+void	get_input(int argc, char **argv, t_input *input);
 
 int	check_input(int argc, char **argv)
 {
@@ -23,6 +25,7 @@ int	check_input(int argc, char **argv)
 
 void	get_input(int argc, char **argv, t_input *input)
 {
+	input->start_time = get_time();
 	input->num_philo = ft_atoi(argv[1]);
 	input->time_to_eat = ft_atoi(argv[2]);
 	input->time_to_die = ft_atoi(argv[3]);

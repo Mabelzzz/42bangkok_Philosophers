@@ -2,9 +2,9 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDE_DIR	= include
-INCLUDES =	-I$(INCLUDE_DIR)
+INCLUDES =	-I $(INCLUDE_DIR)
 
-LIB = libft/ft_atoi.c
+LIB = libft/ft_atoi.c \
 
 SRCS = 	srcs/philo.c \
 		srcs/input.c \
