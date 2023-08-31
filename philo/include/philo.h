@@ -54,7 +54,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int				tid;
+	int					stid;
 	// int				philo_dead;
 	// long long		t0;
 	pthread_mutex_t	print;
