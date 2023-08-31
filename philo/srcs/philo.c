@@ -100,7 +100,7 @@ void	my_sleep(long long start, long long time)
 	while(get_time() - start < time * 1000)
 		usleep(1);
 }
-
+	voideatiting
 // void	eating(t_philo *philo)
 // {
 // 	long long current;
