@@ -50,11 +50,12 @@ typedef struct s_philo
 	pthread_mutex_t	print;
 	pthread_mutex_t	my_forks;
 	pthread_mutex_t	another_forks;
+	int				f;
 }					t_philo;
 
 typedef struct s_data
 {
-	int					stid;
+	int					tid;
 	// int				philo_dead;
 	// long long		t0;
 	pthread_mutex_t	print;
@@ -77,7 +78,7 @@ void		create_pthread(t_data *data, int argc, char **argv);
 void		my_sleep(long long start, long long time);
 // void		ft_print(t_philo *philo, char *str);
 
-void	ft_print(t_philo *philo, char *str, char *color);
+void	ft_print(t_data *data, int tid, char *str, char *color);
 int		check_input(int argc, char **argv);
 void	get_input(int argc, char **argv, t_input *input);
 
