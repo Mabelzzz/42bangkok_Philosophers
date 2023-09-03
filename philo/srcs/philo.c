@@ -37,11 +37,13 @@ void	set_fork(t_data *data)
 		{
 			// data->philo[i].another_forks = data->philo[i + 1].my_forks;
 			data->philo[i].f = i + 1;
+			// printf("i = %d f = %d ", i, data->philo[i].f);
 		}
 		else
 		{
 			// data->philo[i].another_forks = data->philo[0].my_forks;
 			data->philo[i].f = 0;
+			// printf("i = %d f = %d ", i, data->philo[i].f);
 		}
 			// data->philo[i].fork_right = 0;
 	}
@@ -63,43 +65,42 @@ long long	current_time(t_philo *philo)
 	return (new_time - philo->input->start_time);
 }
 
-void	*routine(void *args)
+void *routine(void *args)
 {
 	int		i;
 	t_data	*data;
-	// t_philo		*philo;
 
 	data = (t_data *)args;
-	// philo = (t_philo *)args;
 	i = data->tid;
-	printf("i = %d tid = %d\n", i, data->tid);
-	exit(0);
-	while(1)
+	int j = -1;
+	while(++j < 3)
 	{
 
 		// philo->current = current_time(philo);
 		// pthread_mutex_lock(&data->philo[data->tid].forks);
 		// printf("Test philo id = %d get_time --> %llu\n", philo->id, get_time());
-		if(pthread_mutex_lock(&data->philo[i].my_forks) == 0)
-			exit(0);
-			// printf("Philo %d has taken a my_fork ( ˘▽˘)っ Y\n", philo->id);
+		if(!pthread_mutex_lock(&data->philo[i].my_forks))
+		{
 			ft_print(data, i, "has taken a my_fork", MAGENTA);
-		if(pthread_mutex_lock(&data->philo[data->philo[i].f].my_forks) == 0)
-			// printf("Philo %d has taken a another_fork ( ˘▽˘)っ Y\n", philo->id);
+			// data->philo[i].fork_left = 1;
+		}
+		if(!pthread_mutex_lock(&data->philo[data->philo[i].f].my_forks))
+		{
 			ft_print(data, i, "has taken a another_fork", MAGENTA);
-		// pthread_mutex_lock(&philo->fork);
-		// eating(philo);
-		data->philo[i].current = current_time(data->philo);
+			// data->philo[i].fork_right = 1;
+		}
+
+		// data->philo[i].current = current_time(data->philo);
 		ft_print(data, i, "is eating", GREEN);
-		my_sleep(data->philo[i].current, (long long)(data->input->time_to_eat * 1000));
+		my_sleep(get_time(), (long long)(data->input->time_to_eat * 1000));
 		data->philo[i].eat_cnt++;
 		// printf("Test philo id = %d now_time --> %llu\n", data->philo[data->tid].id, get_time() - data->input->start_time);
 		// printf("-------------------------------------------------------------------------------------------\n");
 		pthread_mutex_unlock(&data->philo[i].my_forks);
 		pthread_mutex_unlock(&data->philo[data->philo[i].f].my_forks);
 		ft_print(data, i, "is sleeping", BLUE);
-		my_sleep(data->philo[i].current, (long long)(data->input->time_to_sleep * 1000));
-		data->philo[i].current = current_time(data->philo);
+		my_sleep(get_time(), (long long)(data->input->time_to_sleep * 1000));
+		// data->philo[i].current = current_time(data->philo);
 		ft_print(data, i, "is thinking", YELLOW);
 		// sleeping(philo);
 
@@ -127,7 +128,10 @@ void	my_sleep(long long start, long long time)
 void	ft_print(t_data *data, int tid, char *str, char *color)
 {
 	if(pthread_mutex_lock(&data->print) == 0)
+	{
+		printf("i = %d f = %d ", tid, data->philo[tid].f);
 		printf("%sPhilo[%lld] %d %s\n"RESET, color, get_time() - data->input->start_time, tid, str);
+	}
 		// printf("%sPhilo[%lld] %d %s\n"RESET, color, current_time(philo)/1000, philo->id, str);
 	pthread_mutex_unlock(&data->print);
 }
@@ -155,8 +159,8 @@ void	create_pthread(t_data *data, int argc, char **argv)
 	{
 		data->philo[i].id = i + 1;
 		data->tid = i;
-		printf("1--- i = %d tid = %d\n", i, data->tid);
-		if (pthread_create(&data->philo[i].thread, NULL, &routine, &data) != 0)
+		// printf("Before create thread : i = %d tid = %d\n", i, data->tid);
+		if (pthread_create(&data->philo[i].thread, NULL, &routine, data) != 0)
 		{
 			perror("Fail to create thread");
 			return ;

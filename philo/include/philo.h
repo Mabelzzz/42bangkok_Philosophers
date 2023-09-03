@@ -41,8 +41,8 @@ typedef struct s_philo
 	int				id;
 	int				num_of_ate;
 	int				time_to_die;
-	// int				fork_left;
-	// int				fork_right;
+	int				fork_left;
+	int				fork_right;
 	long long		current;
 	int				eat_cnt;
 	t_input			*input;
