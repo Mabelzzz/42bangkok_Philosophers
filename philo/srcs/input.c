@@ -26,8 +26,8 @@ int	check_input(int argc, char **argv)
 void	get_input(int argc, char **argv, t_input *input)
 {
 	input->num_philo = ft_atoi(argv[1]);
-	input->time_to_eat = ft_atoi(argv[2]);
-	input->time_to_die = ft_atoi(argv[3]);
+	input->time_to_die = ft_atoi(argv[2]);
+	input->time_to_eat = ft_atoi(argv[3]);
 	input->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6 && argv[5])
 		input->num_of_eat = ft_atoi(argv[5]);

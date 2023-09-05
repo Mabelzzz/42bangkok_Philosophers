@@ -6,8 +6,12 @@ INCLUDES =	-I $(INCLUDE_DIR)
 
 LIB = libft/ft_atoi.c \
 
-SRCS = 	srcs/philo.c \
+SRCS =	srcs/get_time.c \
+		srcs/init_mutex.c \
 		srcs/input.c \
+		srcs/philo.c \
+		srcs/routine.c \
+		srcs/utils.c \
 		$(LIB)
 
 M_OBJS = $(SRCS:.c=.o)
