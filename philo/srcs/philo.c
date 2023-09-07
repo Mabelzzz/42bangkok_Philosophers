@@ -26,37 +26,30 @@ void	set_fork(t_data *data)
 	int	i;
 
 	i = -1;
-	while(++i < data->input->num_philo)
+	while(++i < NUM_PHILO)
 	{
-		// data->philo[i].fork_left = i;
-		if (i != data->input->num_philo - 1)
+		// PHILO[i].fork_left = i;
+		if (i != NUM_PHILO - 1)
 		{
-			// data->philo[i].another_forks = data->philo[i + 1].my_forks;
-			data->philo[i].f = i + 1;
-			// printf("i = %d f = %d ", i, data->philo[i].f);
+			// PHILO[i].another_forks = PHILO[i + 1].my_forks;
+			PHILO[i].f = i + 1;
+			// printf("i = %d f = %d ", i, PHILO[i].f);
 		}
 		else
 		{
-			// data->philo[i].another_forks = data->philo[0].my_forks;
-			data->philo[i].f = 0;
-			// printf("i = %d f = %d ", i, data->philo[i].f);
+			// PHILO[i].another_forks = PHILO[0].my_forks;
+			PHILO[i].f = 0;
+			// printf("i = %d f = %d ", i, PHILO[i].f);
 		}
-			// data->philo[i].fork_right = 0;
+			// PHILO[i].fork_right = 0;
 	}
 }
 
 void	take_fork(t_data *data, int tid)
 {
-	if(!pthread_mutex_lock(&data->philo[tid].my_forks))
-	{
-		ft_print(data, tid, "has taken a my_fork", MAGENTA);
-		// data->philo[i].fork_left = 1;
-	}
-	if(!pthread_mutex_lock(&data->philo[data->philo[tid].f].my_forks))
-	{
-		ft_print(data, tid, "has taken a another_fork", MAGENTA);
-		// data->philo[i].fork_right = 1;
-	}
+	if(!pthread_mutex_lock(&PHILO[tid].my_forks)
+		&& !pthread_mutex_lock(&PHILO[PHILO[tid].f].my_forks))
+		ft_print_fork(data, tid, MAGENTA);
 }
 
 void	create_pthread(t_data *data)
@@ -64,26 +57,39 @@ void	create_pthread(t_data *data)
 	int	i;
 
 	i = -1;
-	data->philo = malloc(sizeof(t_philo) * data->input->num_philo);
+	PHILO = malloc(sizeof(t_philo) * NUM_PHILO);
 	init_mutex(data);
 	set_fork(data);
+	IS_DEAD = 0;
 	data->input->start_time = get_time() / 1000;
-	while (++i < data->input->num_philo)
+	if (NUM_PHILO <= 1)
 	{
-		data->philo[i].input = data->input;
-		data->philo[i].id = i + 1;
+		usleep(10);
+		dead(data, 0);
+	}
+	while (++i < NUM_PHILO)
+	{
+		PHILO[i].input = data->input;
+		PHILO[i].id = i + 1;
 		data->tid = i;
-		if (pthread_create(&data->philo[i].thread, NULL, &routine, data) != 0)
+		if (pthread_create(&PHILO[i].thread, NULL, &routine, data) != 0)
 		{
 			perror("Fail to create thread");
 			return ;
 		}
-		usleep(3);
+		// if (check_die(data, i + 1, 1))
+		// 	dead(data, i + 1);
+		usleep(10);
 	}
+	if (pthread_create(&data->check, NULL, &check_is_dead, data) != 0)
+		perror("Fail to create thread");
+	usleep(10);
 	i = -1;
-	while (++i < data->input->num_philo)
+	while (++i < NUM_PHILO)
 	{
-		if (pthread_join(data->philo[i].thread, NULL) != 0)
+		if (pthread_join(PHILO[i].thread, NULL) != 0)
 			return ;
 	}
+	pthread_join(data->check, NULL);
+	// check_is_dead(data);
 }

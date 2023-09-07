@@ -6,6 +6,6 @@ void	init_mutex(t_data *data)
 
 	i = -1;
 	pthread_mutex_init(&data->print, NULL);
-	while (++i < data->input->num_philo)
-		pthread_mutex_init(&data->philo[i].my_forks, NULL);
+	while (++i < NUM_PHILO)
+		pthread_mutex_init(&PHILO[i].my_forks, NULL);
 }

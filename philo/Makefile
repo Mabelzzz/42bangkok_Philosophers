@@ -6,7 +6,8 @@ INCLUDES =	-I $(INCLUDE_DIR)
 
 LIB = libft/ft_atoi.c \
 
-SRCS =	srcs/get_time.c \
+SRCS =	srcs/check_die.c \
+		srcs/get_time.c \
 		srcs/init_mutex.c \
 		srcs/input.c \
 		srcs/philo.c \

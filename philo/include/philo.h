@@ -9,6 +9,15 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+# define PHILO		data->philo
+# define IS_DEAD	data->is_dead
+# define DIE		data->input->time_to_die
+# define EAT		data->input->time_to_eat
+# define SLP		data->input->time_to_sleep
+# define NUM_EAT	data->input->num_of_eat
+# define NUM_PHILO	data->input->num_of_philo
+# define START		data->input->start_time
+
 # define RED		"\033[0;31m"
 # define GREEN		"\033[0;32m"
 # define YELLOW		"\033[0;33m"
@@ -28,11 +37,11 @@
 
 typedef struct s_input
 {
-	int				num_philo;
+	int				num_of_philo;
+	int				num_of_eat;
 	int				time_to_eat;
 	int				time_to_die;
 	int				time_to_sleep;
-	int				num_of_eat;
 	long long		start_time;
 }					t_input;
 
@@ -44,6 +53,7 @@ typedef struct s_philo
 	int				fork_left;
 	int				fork_right;
 	long long		current;
+	long long		last_meal;
 	int				eat_cnt;
 	t_input			*input;
 	pthread_t		thread;
@@ -56,8 +66,10 @@ typedef struct s_data
 {
 	int					tid;
 	int					status_die;
+	int					is_dead;
 	// int				philo_dead;
 	// long long		t0;
+	pthread_t		check;
 	pthread_mutex_t	print;
 	t_input			*input;
 	t_philo			*philo;
@@ -70,9 +82,10 @@ typedef struct s_data
 
 int		ft_atoi(const char *str);
 
+
 long long	get_time(void);
-long long	current_time(t_philo *philo);
-void		spend_time(long long start, long long time);
+long long	current_time(t_data *data);
+void		spend_time(t_data *data, long long time, int tid, int eat);
 
 void	init_mutex(t_data *data);
 
@@ -87,8 +100,13 @@ void	*routine(void *args);
 void	eating(t_data *data, int tid);
 void	sleeping(t_data *data, int tid);
 void	thinking(t_data *data, int tid);
-int		check_die(t_data *data, int tid);
+void	dead(t_data *data, int tid);
+
+int		check_die(t_data *data, int tid, int eat);
+void	*check_is_dead(void *args);
+void	check_who_die(t_data *data, int tid);
 
 void	ft_print(t_data *data, int tid, char *str, char *color);
+void	ft_print_fork(t_data *data, int tid, char *color);
 
 #endif
