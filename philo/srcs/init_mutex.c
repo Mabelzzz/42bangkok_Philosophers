@@ -1,5 +1,8 @@
 #include "philo.h"
 
+void	init_mutex(t_data *data);
+void	destroy_mutex(t_data *data);
+
 void	init_mutex(t_data *data)
 {
 	int	i;
@@ -8,4 +11,14 @@ void	init_mutex(t_data *data)
 	pthread_mutex_init(&data->print, NULL);
 	while (++i < NUM_PHILO)
 		pthread_mutex_init(&PHILO[i].my_forks, NULL);
+}
+
+void	destroy_mutex(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	pthread_mutex_destroy(&data->print);
+	while (++i < NUM_PHILO)
+		pthread_mutex_destroy(&PHILO[i].my_forks);
 }

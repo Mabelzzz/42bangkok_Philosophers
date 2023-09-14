@@ -2,7 +2,7 @@
 
 long long	get_time(void);
 long long	current_time(t_data *data);
-void		spend_time(t_data *data, long long time, int tid, int eat);
+void		spend_time(long long time);
 
 long long	get_time(void)
 {
@@ -20,28 +20,11 @@ long long	current_time(t_data *data)
 	return (new_time - data->input->start_time);
 }
 
-void	spend_time(t_data *data, long long time, int tid, int eat)
+void	spend_time(long long time)
 {
 	long long	start;
-	long long	now;
-	// long long	tmp;
 
-	(void) eat;
-	(void) data;
-	(void) tid;
-	// if (eat == 1)
-		// tmp = DIE * (PHILO[tid].eat_cnt + 1);
-	// else
-	// 	tmp = DIE * PHILO[tid].eat_cnt;
 	start = get_time();
-	now = get_time();
-	while(!IS_DEAD && now - start < time)
-	{
-		// if (now > tmp)
-		// 	dead(data, tid);
-		// if (current_time(data) - PHILO[tid].last_meal > DIE)
-		// 	dead(data, tid);
-		usleep(100);
-		now = get_time();
-	}
+	while(get_time() - start < time)
+		usleep(1);
 }

@@ -85,14 +85,15 @@ int		ft_atoi(const char *str);
 
 long long	get_time(void);
 long long	current_time(t_data *data);
-void		spend_time(t_data *data, long long time, int tid, int eat);
+void		spend_time(long long time);
 
 void	init_mutex(t_data *data);
+void	destroy_mutex(t_data *data);
 
 int		check_input(int argc, char **argv);
-void	get_input(int argc, char **argv, t_input *input);
+void	get_input(char **argv, t_data *data, t_input *input);
 
-void		set_fork(t_data *data);
+void		set_another_fork(t_data *data);
 void		take_fork(t_data *data, int tid);
 void		create_pthread(t_data *data);
 
@@ -108,5 +109,6 @@ void	check_who_die(t_data *data, int tid);
 
 void	ft_print(t_data *data, int tid, char *str, char *color);
 void	ft_print_fork(t_data *data, int tid, char *color);
+void	ft_exit(t_data *data);
 
 #endif
