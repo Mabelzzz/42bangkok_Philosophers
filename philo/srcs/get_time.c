@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_time.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 22:29:39 by pnamwayk          #+#    #+#             */
+/*   Updated: 2023/09/14 22:29:42 by pnamwayk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 long long	get_time(void);
@@ -16,7 +28,7 @@ long long	current_time(t_data *data)
 {
 	long long	new_time;
 
-	new_time = get_time()/1000;
+	new_time = get_time() / 1000;
 	return (new_time - data->input->start_time);
 }
 
@@ -25,6 +37,6 @@ void	spend_time(long long time)
 	long long	start;
 
 	start = get_time();
-	while(get_time() - start < time)
+	while (get_time() - start < time)
 		usleep(1);
 }

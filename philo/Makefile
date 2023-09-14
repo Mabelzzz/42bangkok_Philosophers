@@ -8,7 +8,7 @@ LIB = libft/ft_atoi.c \
 
 SRCS =	srcs/check_die.c \
 		srcs/get_time.c \
-		srcs/init_mutex.c \
+		srcs/mutex.c \
 		srcs/input.c \
 		srcs/philo.c \
 		srcs/routine.c \

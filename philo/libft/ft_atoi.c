@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 23:50:47 by pnamwayk          #+#    #+#             */
+/*   Updated: 2023/09/14 23:50:51 by pnamwayk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ft_atoi(const char *str)
@@ -24,9 +36,7 @@ int	ft_atoi(const char *str)
 		index++;
 	}
 	result *= minus;
-	if (str[index] != 0)
-		return (-1);
-	if (result > 2147483647 || result < -2147483648)
+	if (str[index] != 0 || result > 2147483647 || result < -2147483648)
 		return (-1);
 	return (result);
 }
